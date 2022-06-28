@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shapeblinder/ui/widgets/Layout.dart';
+import 'package:shapeblinder/ui/widgets/Logo.dart';
+import 'package:shapeblinder/ui/widgets/Tap.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -6,11 +9,21 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: const Text("Welcome to the other page"),
-      ),
-      body: const Center(child: Text("This is the other page")),
+      backgroundColor: Colors.black,
+      body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            Navigator.pushNamed(context, "/game");
+            // TODO navigate to game screen
+          },
+          child: const Layout(children: <Widget>[
+            Spacer(
+              flex: 2,
+            ),
+            Logo(title: "ShapeBlinder", subtitle: "A game with the lights off"),
+            Spacer(),
+            Tap(title: "Tap anywhere to start")
+          ])),
     );
   }
 }

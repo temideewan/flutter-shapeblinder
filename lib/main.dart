@@ -33,7 +33,7 @@ class Shapeblinder extends StatelessWidget {
           // is not restarted.
           primarySwatch: Colors.grey,
           fontFamily: "Muli"),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const Home(),
     );
   }
 }
