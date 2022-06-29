@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shapeblinder/ui/widgets/Layout.dart';
-import 'package:shapeblinder/ui/widgets/Logo.dart';
-import 'package:shapeblinder/ui/widgets/Tap.dart';
+import 'package:shapeblinder/ui/widgets/layout.dart';
+import 'package:shapeblinder/ui/widgets/logo.dart';
+import 'package:shapeblinder/ui/widgets/tap.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
             Spacer(
               flex: 2,
             ),
-            Logo(title: "ShapeBlinder", subtitle: "A game with the lights off"),
+            Logo(title: "shapeblinder", subtitle: "A game with the lights off"),
             Spacer(),
             Tap(title: "Tap anywhere to start")
           ])),

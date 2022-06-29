@@ -32,6 +32,11 @@ class Shapeblinder extends StatelessWidget {
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
           primarySwatch: Colors.grey,
+          textTheme: TextTheme(
+              bodyText2: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.grey[600],
+                  fontStyle: FontStyle.italic)),
           fontFamily: "Muli"),
       home: const Home(),
     );

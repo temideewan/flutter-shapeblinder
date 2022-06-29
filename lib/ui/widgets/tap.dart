@@ -16,11 +16,7 @@ class Tap extends StatelessWidget {
           )),
       const SizedBox(height: 14.0),
       Text(title, style: TextStyle(fontSize: 18.0, color: Colors.grey[600])),
-      Text("Best score: 0",
-          style: TextStyle(
-              fontSize: 18.0,
-              color: Colors.grey[600],
-              fontStyle: FontStyle.italic))
+      Text("Best score: 0", style: Theme.of(context).textTheme.bodyText2)
     ]));
   }
 }

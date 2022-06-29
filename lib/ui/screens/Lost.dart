@@ -20,7 +20,7 @@ class Lost extends StatelessWidget {
             Spacer(
               flex: 2,
             ),
-            Logo(title: "Tou lost", subtitle: "score: 0"),
+            Logo(title: "You lost", subtitle: "score: 0"),
             Spacer(),
             Tap(title: "Tap anywhere to start again")
           ])),
