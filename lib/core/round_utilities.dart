@@ -1,5 +1,13 @@
 import "dart:math";
 import "dart:core";
+import 'package:flutter/material.dart';
+
+import "./shapepainters/circle.dart";
+import "./shapepainters/square.dart";
+import "./shapepainters/cross.dart";
+import "./shapepainters/oval.dart";
+import "./shapepainters/line.dart";
+import "./shapepainters/donut.dart";
 
 class RoundData {
   List<String> options;
@@ -36,4 +44,21 @@ RoundData generateRound() {
   RoundData data = RoundData(options: res, correct: random.nextInt(3));
 
   return data;
+}
+
+dynamic getPainterForName(BuildContext context, Function onTap, String name) {
+  switch (name) {
+    case "circle":
+      return Circle(context, onTap);
+    case "cross":
+      return Cross(context, onTap);
+    case "donut":
+      return Donut(context, onTap);
+    case "line":
+      return Line(context, onTap);
+    case "oval":
+      return Oval(context, onTap);
+    case "square":
+      return Square(context, onTap);
+  }
 }

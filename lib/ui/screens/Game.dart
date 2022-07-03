@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shapeblinder/core/Lost_Screen_Arguments.dart';
+import 'package:shapeblinder/core/my_lost_screen_arguments.dart';
 import 'package:shapeblinder/ui/widgets/layout.dart';
 import 'package:shapeblinder/ui/widgets/logo.dart';
+import 'package:touchable/touchable.dart';
 import "../../core/round_utilities.dart";
+import "../../core/haptic_utilities.dart";
 
 class Game extends StatefulWidget {
   const Game({Key? key}) : super(key: key);
@@ -32,6 +34,7 @@ class _GameState extends State<Game> {
   }
 
   void guess(BuildContext context, String name) {
+    lightHaptic();
     if (data.options[data.correct] == name) {
       // correct guess
       correctGuess(context);
@@ -66,6 +69,7 @@ class _GameState extends State<Game> {
   }
 
   void lost() {
+    vibrateHaptic();
     // navigate to the lost screen with the current points
     Navigator.pushNamed(context, "/lost",
         arguments: LostScreenArguments(points: points));
@@ -77,40 +81,50 @@ class _GameState extends State<Game> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pop();
-      },
-      child: Scaffold(
-          backgroundColor: Colors.black,
-          body: Layout(children: [
-            const Logo(
-                title: "shapeblinder", subtitle: "current score: 0 | high: 0"),
-            Container(height: width / 1.25, width: width / 1.25),
-            Center(
-                child: Text("Select the shape that you feel",
-                    style: Theme.of(context).textTheme.bodyText2)),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 14.0),
-              child: Builder(builder: (context) {
-                return Opacity(
-                  opacity: 0.4,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        ...data.options.map((shape) => Container(
-                            height: width / 5,
-                            width: width / 5,
-                            child: GestureDetector(
-                                onTap: () => guess(context, shape),
-                                child: SvgPicture.asset("assets/svg/$shape.svg",
-                                    semanticsLabel: "$shape icon"))))
-                      ]),
-                );
-              }),
-            )
-          ])),
-    );
+    return Scaffold(
+        backgroundColor: Colors.black,
+        body: Layout(children: [
+          Logo(
+              title: "shapeblinder",
+              subtitle: "current score: $points | high: 0"),
+          SizedBox(
+              height: width / 1.25,
+              width: width / 1.25,
+              child: CanvasTouchDetector(
+                builder: (context) {
+                  return CustomPaint(
+                      painter: getPainterForName(
+                          context, vibrateHaptic, data.options[data.correct]));
+                },
+                gesturesToOverride: const <GestureType>[
+                  GestureType.onPanDown,
+                  GestureType.onPanStart,
+                  GestureType.onPanUpdate
+                ],
+              )),
+          Center(
+              child: Text("Select the shape that you feel",
+                  style: Theme.of(context).textTheme.bodyText2)),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 14.0),
+            child: Builder(builder: (context) {
+              return Opacity(
+                opacity: 0.4,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      ...data.options.map((shape) => SizedBox(
+                          height: width / 5,
+                          width: width / 5,
+                          child: GestureDetector(
+                              onTap: () => guess(context, shape),
+                              child: SvgPicture.asset("assets/svg/$shape.svg",
+                                  semanticsLabel: "$shape icon"))))
+                    ]),
+              );
+            }),
+          )
+        ]));
   }
 }

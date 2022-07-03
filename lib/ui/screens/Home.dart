@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shapeblinder/core/haptic_utilities.dart';
 import 'package:shapeblinder/ui/widgets/layout.dart';
 import 'package:shapeblinder/ui/widgets/logo.dart';
 import 'package:shapeblinder/ui/widgets/tap.dart';
@@ -13,8 +14,8 @@ class Home extends StatelessWidget {
       body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
+            lightHaptic();
             Navigator.pushNamed(context, "/game");
-            // TODO navigate to game screen
           },
           child: const Layout(children: <Widget>[
             Spacer(
