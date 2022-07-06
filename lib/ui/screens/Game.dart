@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shapeblinder/core/my_lost_screen_arguments.dart';
 import 'package:shapeblinder/ui/widgets/layout.dart';
 import 'package:shapeblinder/ui/widgets/logo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:touchable/touchable.dart';
 import "../../core/round_utilities.dart";
 import "../../core/haptic_utilities.dart";
@@ -24,6 +25,7 @@ class _GameState extends State<Game> {
   void initState() {
     super.initState();
     reset();
+    loadHighScore();
   }
 
   void reset() {
@@ -70,12 +72,32 @@ class _GameState extends State<Game> {
 
   void lost() {
     vibrateHaptic();
+    if (points > high) {
+      setHighScore(points);
+    }
     // navigate to the lost screen with the current points
     Navigator.pushNamed(context, "/lost",
         arguments: LostScreenArguments(points: points));
 
     // reset points
     reset();
+  }
+
+  void loadHighScore() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      high = prefs.getInt('High') ?? 0;
+    });
+  }
+
+  void setHighScore(int score) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setInt("High", score);
+    setState(() {
+      high = score;
+    });
   }
 
   @override
@@ -86,7 +108,7 @@ class _GameState extends State<Game> {
         body: Layout(children: [
           Logo(
               title: "shapeblinder",
-              subtitle: "current score: $points | high: 0"),
+              subtitle: "current score: $points | high: $high"),
           SizedBox(
               height: width / 1.25,
               width: width / 1.25,
